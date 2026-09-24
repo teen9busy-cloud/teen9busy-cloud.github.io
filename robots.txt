@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Naver Yeti Crawler & Googlebot
+User-agent: Yeti
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+Sitemap: https://teen9busy-cloud.github.io/valueplus/sitemap.xml
