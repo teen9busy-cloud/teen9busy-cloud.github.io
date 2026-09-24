@@ -126,12 +126,34 @@ async function handleFormSubmit(event) {
       showToast(`✅ ${displayName}님의 견적 문의가 대표님(teen942@naver.com)께 실시간 전송되었습니다.`);
       form.reset();
     } else {
-      showToast(`✅ ${displayName}님의 문의가 접수되었습니다. (네이버 메일 teen942@naver.com 연동 확인)`);
+      // Formspree 고유 키 미연동 시: 데이터 유실을 막기 위해 mailto 클라이언트로 자동 전환
+      const mailSubject = encodeURIComponent(`[밸류플러스 견적문의] ${displayName} (${category})`);
+      const mailBody = encodeURIComponent(`[밸류플러스 온라인 견적·문의 접수 내역]\n\n` +
+        `■ 문의분야: ${category}\n` +
+        `■ 담당자명: ${name}\n` +
+        `■ 소속기관: ${org || '미기재'}\n` +
+        `■ 연락처: ${phone}\n` +
+        `■ 회신이메일: ${email}\n\n` +
+        `■ 의뢰 내용 및 요청사항:\n${message}\n\n` +
+        `---\n접수일시: ${new Date().toLocaleString('ko-KR')}`
+      );
+      
+      showToast(`✉️ 네이버 메일(teen942@naver.com) 발송 창을 연결합니다...`);
+      window.location.href = `mailto:teen942@naver.com?subject=${mailSubject}&body=${mailBody}`;
       form.reset();
     }
   } catch (error) {
-    const displayName = org ? `${org} ${name}` : name;
-    showToast(`✅ ${displayName}님의 견적 문의가 성공적으로 접수되었습니다. 신속히 검토 후 연락드리겠습니다.`);
+    const mailSubject = encodeURIComponent(`[밸류플러스 견적문의] ${displayName} (${category})`);
+    const mailBody = encodeURIComponent(`[밸류플러스 온라인 견적·문의 접수 내역]\n\n` +
+      `■ 문의분야: ${category}\n` +
+      `■ 담당자명: ${name}\n` +
+      `■ 소속기관: ${org || '미기재'}\n` +
+      `■ 연락처: ${phone}\n` +
+      `■ 회신이메일: ${email}\n\n` +
+      `■ 의뢰 내용 및 요청사항:\n${message}\n`
+    );
+    showToast(`✉️ 메일 클라이언트를 통해 teen942@naver.com으로 연결합니다.`);
+    window.location.href = `mailto:teen942@naver.com?subject=${mailSubject}&body=${mailBody}`;
     form.reset();
   } finally {
     submitBtn.disabled = false;
