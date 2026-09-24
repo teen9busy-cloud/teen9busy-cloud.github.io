@@ -1,0 +1,16 @@
+# Internal private proposals and source documents
+*[소개]*
+*[제안서]*
+*.hwp
+*.hwpx
+*.docx
+*.pdf
+*.xlsx
+*.pptx
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
